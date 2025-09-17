@@ -177,7 +177,7 @@ Requirements:
 Answer only what you know with confidence. Do not create fictional references."""
 
         response = await acompletion(
-            model="openai/gpt-4o",
+            model="openai/gpt-5",
             messages=[{"role": "user", "content": prompt}],
             api_key=os.getenv("OPENAI_API_KEY"),
             base_url=os.getenv("BASE_URL"),
