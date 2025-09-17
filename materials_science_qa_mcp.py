@@ -29,7 +29,7 @@ mcp = FastMCP("Materials Science RAG Server")
 # Global configuration
 MAX_RETRIES = 3
 TIMEOUT_SECONDS = 180
-CONCURRENT_LIMIT = 5  # Limit concurrent sessions
+CONCURRENT_LIMIT = 10  # Limit concurrent sessions
 active_sessions = asyncio.Semaphore(CONCURRENT_LIMIT)
 
 class OpenScholarScraper:
@@ -76,7 +76,7 @@ class OpenScholarScraper:
         """Search materials science questions on OpenScholar"""
         page = None
         try:
-            page = await self.context.new_page()
+            page = await self.context.new_page() # type: ignore
             
             # Navigate to OpenScholar
             logger.info(f"Navigating to OpenScholar for question: {question[:50]}...")
@@ -125,7 +125,7 @@ class OpenScholarScraper:
                 
                 for item in reference_items:
                     ref_text = await item.text_content()
-                    ref_text = ' '.join(ref_text.split())
+                    ref_text = ' '.join(ref_text.split()) # type: ignore
                     if ref_text.strip():
                         references.append(ref_text.strip())
             
@@ -177,7 +177,7 @@ Requirements:
 Answer only what you know with confidence. Do not create fictional references."""
 
         response = await acompletion(
-            model="openai/gpt-5",
+            model="openai/gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             api_key=os.getenv("OPENAI_API_KEY"),
             base_url=os.getenv("BASE_URL"),
@@ -280,6 +280,7 @@ async def answer_materials_science_question(question: str) -> str:
             'question': question,
             'rag_retrieval': rag_result,
             'llm_answer': llm_result,
+            'Instruction': "You must present the reference details from rag_retrieval to the user in Markdown format and place them at the end of your response.",
             # 'processing_info': {
             #     'concurrent_sessions_used': CONCURRENT_LIMIT - active_sessions._value,
             #     'max_concurrent_limit': CONCURRENT_LIMIT,
@@ -288,7 +289,7 @@ async def answer_materials_science_question(question: str) -> str:
             #     'timestamp': datetime.now().isoformat()
             # }
         }
-        print(response_data)
+
         logger.info("Question processing completed")
         return json.dumps(response_data, indent=2, ensure_ascii=False)
 
