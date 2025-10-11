@@ -27,8 +27,8 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP("Materials Science RAG Server")
 
 # Global configuration
-MAX_RETRIES = 3
-TIMEOUT_SECONDS = 180
+MAX_RETRIES = 1
+TIMEOUT_SECONDS = 60
 CONCURRENT_LIMIT = 10  # Limit concurrent sessions
 active_sessions = asyncio.Semaphore(CONCURRENT_LIMIT)
 
@@ -80,7 +80,7 @@ class OpenScholarScraper:
             
             # Navigate to OpenScholar
             logger.info(f"Navigating to OpenScholar for question: {question[:50]}...")
-            await page.goto('https://openscholar.allen.ai', wait_until='networkidle', timeout=30000)
+            await page.goto('https://openscholar.allen.ai', wait_until='networkidle', timeout=10000)
             
             # Input question
             input_box = page.locator('textarea[data-testid="message-bar-input"]')
