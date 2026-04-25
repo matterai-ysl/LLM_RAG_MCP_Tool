@@ -21,11 +21,8 @@ requires-python = ">=3.10"
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-include = ["materials_science_mcp*"]
-
-[tool.setuptools.py-modules]
-include = ["materials_science_mcp"]
+[tool.setuptools]
+py-modules = ["materials_science_qa_mcp"]
 
 [tool.uv]
 dev-dependencies = []

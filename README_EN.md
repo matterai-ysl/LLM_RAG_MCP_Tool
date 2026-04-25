@@ -33,12 +33,12 @@ English-only MCP server for materials science questions with RAG retrieval and L
 
 ### 1. Environment Preparation
 
-Ensure Python 3.10+ and required dependencies:
+This project uses `uv`. Ensure Python 3.10+ is available, then install the locked environment and Playwright browser runtime:
 
 ```bash
 cd MCP_LLM_RAG_Tool
-uv pip install fastmcp playwright litellm python-dotenv aiofiles httpx structlog openai
-.venv/bin/python -m playwright install chromium
+uv sync
+uv run python -m playwright install chromium
 ```
 
 ### 2. Environment Variables
@@ -50,24 +50,33 @@ BASE_URL=https://vip.dmxapi.com/v1
 OPENAI_API_KEY=your-api-key-here
 ```
 
-## Usage
+## MCP Startup
 
-### Method 1: Direct Execution
+### Streamable HTTP
 
 ```bash
-.venv/bin/python materials_science_mcp_en.py
+uv run python materials_science_qa_mcp.py streamable-http
 ```
 
-### Method 2: Claude Desktop App Integration
+The MCP server listens on port `8110`.
 
-Add configuration from `mcp_config_en.json` to Claude MCP settings:
+### STDIO Client Configuration
+
+Use this form for MCP clients that launch the server process directly:
 
 ```json
 {
   "mcpServers": {
     "materials-science-rag-en": {
-      "command": "python",
-      "args": ["/path/to/materials_science_mcp_en.py"],
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/absolute/path/to/MCP_LLM_RAG_Tool",
+        "run",
+        "python",
+        "materials_science_qa_mcp.py",
+        "stdio"
+      ],
       "env": {
         "BASE_URL": "https://vip.dmxapi.com/v1",
         "OPENAI_API_KEY": "your-api-key-here"
@@ -75,12 +84,6 @@ Add configuration from `mcp_config_en.json` to Claude MCP settings:
     }
   }
 }
-```
-
-### Method 3: Demo
-
-```bash
-.venv/bin/python demo_en.py
 ```
 
 ## Available Tools
