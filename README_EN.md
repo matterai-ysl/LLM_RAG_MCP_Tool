@@ -46,7 +46,7 @@ uv run python -m playwright install chromium
 ```
 
 For the detailed runtime requirements and verified local package versions,
-see [REQUIREMENTS.md](REQUIREMENTS.md).
+see [requirements.txt](requirements.txt).
 
 ### 2. Environment Variables
 

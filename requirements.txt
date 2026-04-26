@@ -1,7 +1,47 @@
 # Runtime requirements for the Materials Science MCP server.
-# This project is managed with uv. Prefer `uv sync` to install from
-# pyproject.toml and uv.lock; this file is kept for tools that expect
-# a requirements.txt document.
+#
+# This project is managed with uv. Use pyproject.toml and uv.lock as the
+# source of truth for installation:
+#
+#   uv sync
+#   uv run python -m playwright install chromium
+#
+# Verified local environment:
+#   uv: 0.7.20
+#   Python: 3.12.11
+#   Project package: materials-science-mcp 1.0.0
+#
+# The project declares support for Python >=3.10.
+#
+# External requirements:
+#   - Internet access for OpenScholar retrieval and LiteLLM/OpenAI-compatible API calls.
+#   - Chromium browser runtime for Playwright.
+#   - An OpenAI-compatible API key and base URL.
+#
+# Required .env values:
+#   BASE_URL=https://vip.dmxapi.com/v1
+#   OPENAI_API_KEY=your-api-key-here
+#
+# Startup commands:
+#   uv run python materials_science_qa_mcp.py streamable-http
+#   uv run python materials_science_qa_mcp.py stdio
+#   uv run python materials_science_qa_mcp.py sse
+#
+# Runtime defaults from materials_science_qa_mcp.py:
+#   MAX_RETRIES=1
+#   TIMEOUT_SECONDS=60
+#   CONCURRENT_LIMIT=10
+#   MCP port=8110
+#
+# Installed versions observed in the current uv environment:
+#   fastmcp 2.12.2
+#   playwright 1.55.0
+#   litellm 1.76.2
+#   openai 1.106.1
+#   python-dotenv 1.1.1
+#   aiofiles 24.1.0
+#   httpx 0.28.1
+#   structlog 25.4.0
 
 fastmcp>=0.2.0
 playwright>=1.40.0
