@@ -31,9 +31,13 @@ English-only MCP server for materials science questions with RAG retrieval and L
 
 ## Installation & Setup
 
-### 1. Environment Preparation
+### 1. Environment Preparation With uv
 
-This project uses `uv`. Ensure Python 3.10+ is available, then install the locked environment and Playwright browser runtime:
+This project uses `uv` for dependency management. `pyproject.toml` and
+`uv.lock` are the source of truth for the Python environment.
+
+Ensure Python 3.10+ and `uv` are available, then install the locked
+environment and Playwright Chromium runtime:
 
 ```bash
 cd MCP_LLM_RAG_Tool
@@ -41,9 +45,13 @@ uv sync
 uv run python -m playwright install chromium
 ```
 
+For the detailed runtime requirements and verified local package versions,
+see [REQUIREMENTS.md](REQUIREMENTS.md).
+
 ### 2. Environment Variables
 
-Ensure `.env` file contains correct API configuration:
+Create a local `.env` file with the API configuration. This file is ignored by
+Git and should not be committed.
 
 ```env
 BASE_URL=https://vip.dmxapi.com/v1
@@ -52,6 +60,9 @@ OPENAI_API_KEY=your-api-key-here
 
 ## MCP Startup
 
+The entry point is `materials_science_qa_mcp.py`. The default transport is
+`streamable-http`, so the explicit and default commands below are equivalent:
+
 ### Streamable HTTP
 
 ```bash
@@ -59,6 +70,18 @@ uv run python materials_science_qa_mcp.py streamable-http
 ```
 
 The MCP server listens on port `8110`.
+
+### STDIO
+
+```bash
+uv run python materials_science_qa_mcp.py stdio
+```
+
+### SSE
+
+```bash
+uv run python materials_science_qa_mcp.py sse
+```
 
 ### STDIO Client Configuration
 
@@ -242,9 +265,10 @@ Academic Answer            General AI Answer
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| MAX_RETRIES | Maximum retry attempts | 3 |
-| TIMEOUT_SECONDS | Request timeout | 180 |
-| CONCURRENT_LIMIT | Max concurrent sessions | 5 |
+| MAX_RETRIES | Maximum retry attempts | 1 |
+| TIMEOUT_SECONDS | Request timeout | 60 |
+| CONCURRENT_LIMIT | Max concurrent sessions | 10 |
+| MCP port | Streamable HTTP/SSE server port | 8110 |
 
 ## Supported Question Types
 
@@ -293,8 +317,10 @@ A: While possible, the system is optimized for materials science and may not per
 ## Technical Requirements
 
 - Python 3.10+
+- uv
 - Internet connection for OpenScholar and LiteLLM
 - Valid OpenAI API key
+- Playwright Chromium runtime
 - Sufficient system resources for browser automation
 
 ## License
